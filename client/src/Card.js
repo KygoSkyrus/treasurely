@@ -7,7 +7,7 @@ const Card = (props) => {
 
 
     <>
-      <div class="container">
+      {/* <div class="container">
         <div class="col col-3">
           <div class="comp-holder">
             <div data-table="comp-01" class="comp js-draggable" draggable='true' ondragstart='onDragStart(event);' ondragend="onDragEnd(event);">
@@ -46,9 +46,9 @@ const Card = (props) => {
           </div>
           <footer class="actual-comp" id="comp-04">&copy; Daily Dev Tips 2020</footer>
         </div>
-</div>
+</div> */}
 
-        <a className='card' href={url.url} target='_blank' rel='noreferrer' >
+        <a className='card' href={url.url} target='_blank' rel='noreferrer' draggable >
           <img src={dummy} alt='' />
           <div className='url-details'>
             <section className='title'>title</section>
