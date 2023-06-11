@@ -1,0 +1,130 @@
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui,cursive,monospace;
+
+}
+
+.all_cards{
+  display: grid;
+  grid-gap: 10px;
+  padding: 1rem;
+  max-width: 600px;
+  margin: auto;
+  /* grid-template-columns: repeat(2,ifr); */
+}
+
+
+/*********** CARD *************/
+.card{
+  display: flex;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.card img{
+  width: 300x;
+  /* height: 100px; */
+  max-width: 80px;
+}
+.card .url-details{
+  padding-left: 10px;
+  width: 100%;
+  position: relative;
+}
+.card .url-details section:nth-child(3){
+position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 10px;
+    color: grey;
+}
+/*********** CARD *************/
+
+
+
+
+
+/*********** add url *************/
+.add-url{
+  width: 60px;
+  height: 60px;
+  background-color: #ffb600;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  /* font-size: 30px; */
+  line-height: 0;
+  cursor: pointer;
+}
+/*********** add url *************/
+
+
+
+
+/*********** MODAL *************/
+#modal{
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: #bcbcbcc4;
+/* max-width: 40vw; */
+height: 40vh;
+border-radius: 4px;
+display: none;
+place-items: center;
+padding: 20px;
+z-index: 2;
+}
+#modal-overlay{
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.744);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.modal-close-btn{
+  position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+#modal form {
+  display: flex;
+  flex-direction: column;
+}
+form input{
+  margin-top:6px ;
+  padding: 8px;
+}
+form input[type=submit]{
+  background-color: #ffb600;
+  color: #fff;
+  cursor: pointer;
+}
+/*********** MODAL *************/
+
+
+
+
+
+/*********** MEDIA QUERIES *************/
+@media (min-width:768px){
+  .all_cards{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    max-width: 1200px;
+  }
+}
+/*********** MEDIA QUERIES *************/
