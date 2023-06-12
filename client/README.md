@@ -10,3 +10,10 @@ https://forum.freecodecamp.org/t/how-can-i-delete-after-drag-and-drop/448046
 
 
 https://codepen.io/rebelchris/pen/OJyBpEQ
+
+
+-task
+
+-drag drop delete
+-api authentication
+-accordion

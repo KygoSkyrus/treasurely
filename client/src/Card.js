@@ -1,11 +1,25 @@
 import React from 'react'
 import dummy from './dummy.jpg'
+
+
 const Card = (props) => {
   const { url } = props;
 
+  
+  
+  function handleDragStart(event) {
+    event.dataTransfer.setData("text/plain", event.currentTarget.dataset.card);
+    event.currentTarget.style.backgroundColor = "red";//when drag is started
+  }
+  
+  function handleDragEnd(event) {
+    event.currentTarget.style.backgroundColor = "#2a9d8f";//when drag ends the color will be
+  }
+
+
+
+
   return (
-
-
     <>
       {/* <div class="container">
         <div class="col col-3">
@@ -48,16 +62,24 @@ const Card = (props) => {
         </div>
 </div> */}
 
-        <a className='card' href={url.url} target='_blank' rel='noreferrer' draggable >
-          <img src={dummy} alt='' />
-          <div className='url-details'>
-            <section className='title'>title</section>
-            <section className='description'>description</section>
-            <section className='url'>{url.url}</section>
-          </div>
-        </a>
-      </>
-      )
+      <a 
+      className='card' 
+      href={url?.url} 
+      target='_blank' 
+      rel='noreferrer' 
+      data-card={url?._id} 
+      draggable 
+      onDragStart={e=>handleDragStart(e)} 
+      onDragEnd={e=>handleDragEnd(e)} >
+        <img src={dummy} alt='' />
+        <div className='url-details'>
+          <section className='title'>title</section>
+          <section className='description'>description</section>
+          <section className='url'>{url?.url}</section>
+        </div>
+      </a>
+    </>
+  )
 }
 
-      export default Card
+export default Card

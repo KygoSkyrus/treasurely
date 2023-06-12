@@ -5,8 +5,10 @@ import Card from './Card'
 
 function App() {
 
-  const [urlState, setUrlState] = useState('');
-  const [urls, setUrls] = useState();
+  const [urlState, setUrlState] = useState('');//for setting url on input change
+  const [urls, setUrls] = useState();//has all urls
+  const [deleteUrl,setDeleteUrl]=useState({url:"",id:""})//keeping url to be  deleted
+  const [userPrompt,setUserPrompt]=useState()
   //function xyz(){
   // let url='https://blog.kiprosh.com/using-url-previews-in-your-web-apps-using-javascript/'
   // fetch(`http://api.linkpreview.net/?key=${process.env.REACT_APP_LINK_PREVIEW_KEY}&fields=icon&q=${url}`)
@@ -60,30 +62,45 @@ function App() {
 
   }
 
-  const handleDragOver=(e)=>{
+  //allowing drop event
+  const handleDragOver = (e) => {
+    //e.target.style.background = "red";
     e.preventDefault();
-    console.log(e.target)
   }
 
-  const handleDrop=(e)=>{
+  const handleDrop = (e) => {
+    e.preventDefault();
+
+    console.log('dddddd==', e.dataTransfer)
+
+    let id = e.dataTransfer.getData("text");
+
+    const draggableElement = document.querySelector(`[data-card="${id}"]`);
+    console.log('DRAGEBLE EKEM',draggableElement)
+
+    // const clone = draggableElement.cloneNode(true);
+    // const remove = document.createElement("div");
+    // remove.classList.add("comp-remove");
+    // remove.innerHTML = "X";
+    // clone.appendChild(remove);
+    // document.getElementById('deleteURL').appendChild(clone);
+
+    document.getElementById('popup').style.display="flex"
+    document.getElementById('modal-overlay').style.display = 'block'
     
-    console.log('dddddd==',e.dataTransfer)
-      let id = e.dataTransfer.getData("text");
-    
-      const draggableElement = document.getElementById(id);
-      const clone = draggableElement.cloneNode(true);
-    
-      const remove = document.createElement("div");
-      remove.classList.add("comp-remove");
-      remove.innerHTML = "X";
-      clone.appendChild(remove);
-    
-      document.getElementById('deleteURL').appendChild(clone);
-    
-      e.dataTransfer.clearData();
-    
-    
+    setDeleteUrl({ ...deleteUrl, url: draggableElement?.href, id: id })
+
+    e.dataTransfer.clearData();
+
+
   }
+
+
+  useEffect(()=>{
+    console.log('usserprompt',userPrompt)
+  },[userPrompt])
+
+ 
 
   return (
     <>
@@ -100,13 +117,14 @@ function App() {
           <i className='fa-solid fa-plus'></i>
         </div>
 
-        <div className='delete-url' id='deleteURL' onDragOver={e=>handleDragOver(e)} onDrop={e=>handleDrop(e)} >
+        <div className='delete-url' id='deleteURL' onDragOver={e => handleDragOver(e)} onDrop={e => handleDrop(e)} >
           <i className='fa-solid fa-trash'></i>
         </div>
 
       </div>
 
       <Modal handleFormSubmit={handleFormSubmit} urlState={urlState} setUrlState={setUrlState} />
+      <PopUp deleteUrl={deleteUrl} setUserPrompt={setUserPrompt} />
     </>
   );
 }
@@ -115,8 +133,6 @@ function App() {
 const Modal = (props) => {
 
   const { handleFormSubmit, handleCloseModal, urlState, setUrlState } = props
-
-
 
   return (
     <>
@@ -128,6 +144,30 @@ const Modal = (props) => {
         </form>
       </div>
       <div id='modal-overlay'></div>
+    </>
+  )
+}
+
+
+const PopUp =(props)=>{
+
+  const {deleteUrl,setUserPrompt}=props
+
+ 
+  return(
+    <>
+     <div id='popup'>
+        <section className='popup-close-btn' >x</section>
+        <div>
+          <section>{deleteUrl?.url}</section>
+          <section>do you want to delete this url?</section>
+          <div>
+            <button onClick={e=>setUserPrompt(true)}>yes</button>
+            <button onClick={e=>setUserPrompt(false)}>no</button>
+          </div>
+        </div>
+      </div>
+      {/* <div id='modal-overlay'></div> */}
     </>
   )
 }
