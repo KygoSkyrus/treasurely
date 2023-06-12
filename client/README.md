@@ -12,8 +12,7 @@ https://forum.freecodecamp.org/t/how-can-i-delete-after-drag-and-drop/448046
 https://codepen.io/rebelchris/pen/OJyBpEQ
 
 
--task
-
--drag drop delete
--api authentication
--accordion
+# todo
+- api authentication
+- accordion
+- after deleting dont let url vanish,,,put it in a trash,ist a CRU application

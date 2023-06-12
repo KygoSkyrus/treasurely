@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Card from './Card'
-
+import Modal from './Modal';
+import UserPromptPopUp from './Popup';
 
 function App() {
 
   const [urlState, setUrlState] = useState('');//for setting url on input change
   const [urls, setUrls] = useState();//has all urls
   const [deleteUrl,setDeleteUrl]=useState({url:"",id:""})//keeping url to be  deleted
-  const [userPrompt,setUserPrompt]=useState()
-  //function xyz(){
+  const [userPrompt,setUserPrompt]=useState(undefined)//true or false by user
+
+
+  //to get url details via API
+  //function getLinkDetails(){
   // let url='https://blog.kiprosh.com/using-url-previews-in-your-web-apps-using-javascript/'
   // fetch(`http://api.linkpreview.net/?key=${process.env.REACT_APP_LINK_PREVIEW_KEY}&fields=icon&q=${url}`)
   // .then(response=>response.json())
   // .then(data=>console.log('d',data))
   // }
 
-  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
 
   useEffect(() => {
     fetch('/api/get_url')
@@ -32,16 +35,22 @@ function App() {
     document.getElementById('modal').style.display = 'flex'
     document.getElementById('modal-overlay').style.display = 'block'
   }
-  const handleCloseModal = () => {
-    document.getElementById('modal').style.display = 'none'
+  
+  const handleCloseModal = (val) => {
+    document.getElementById(val).style.display = 'none'
     document.getElementById('modal-overlay').style.display = 'none'
-
+if(val==='modal'){
+  setUrlState('')
+} else if(document.querySelector(`[data-card="${deleteUrl.id}"]`)){
+  document.querySelector(`[data-card="${deleteUrl.id}"]`).style.backgroundColor='#f1f1f1'
+}
   }
 
   const handleFormSubmit = (e) => {
     e.preventDefault()
     console.log('dd', urlState)
 
+    if(urlState!==""){
     fetch('/api/add_url', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -59,7 +68,9 @@ function App() {
         }
       })
       .catch(error => console.log(error))
-
+    }else{
+      alert('url field cannot be empty')
+    }
   }
 
   //allowing drop event
@@ -97,7 +108,19 @@ function App() {
 
 
   useEffect(()=>{
-    console.log('usserprompt',userPrompt)
+    console.log('usserprompt',userPrompt,deleteUrl.id)
+    const theSelected=document.querySelector(`[data-card="${deleteUrl.id}"]`);
+    if(userPrompt){
+      theSelected?.remove()
+      handleCloseModal('popup')
+      setUserPrompt(undefined)
+    }else if(theSelected){
+      console.log('rrrr')
+      theSelected.style.backgroundColor='#f1f1f1'
+      handleCloseModal('popup')
+      setUserPrompt(undefined)
+      setDeleteUrl({ ...deleteUrl, url: '', id: '' })
+    }
   },[userPrompt])
 
  
@@ -108,7 +131,7 @@ function App() {
         <div className='all_cards'>
           {urls?.map(x => {
             return (
-              <Card key={x._id} url={x} />
+              <Card key={x._id} url={x} deleteUrl={deleteUrl} />
             )
           })}
         </div>
@@ -123,53 +146,13 @@ function App() {
 
       </div>
 
-      <Modal handleFormSubmit={handleFormSubmit} urlState={urlState} setUrlState={setUrlState} />
-      <PopUp deleteUrl={deleteUrl} setUserPrompt={setUserPrompt} />
+      <Modal handleFormSubmit={handleFormSubmit} handleCloseModal={handleCloseModal} urlState={urlState} setUrlState={setUrlState} />
+      <UserPromptPopUp deleteUrl={deleteUrl} setUserPrompt={setUserPrompt} handleCloseModal={handleCloseModal} />
+      <div id='modal-overlay' ></div>
+      {/* overlay not working */}
     </>
   );
 }
 
-
-const Modal = (props) => {
-
-  const { handleFormSubmit, handleCloseModal, urlState, setUrlState } = props
-
-  return (
-    <>
-      <div id='modal'>
-        <section className='modal-close-btn' onClick={handleCloseModal}>x</section>
-        <form onSubmit={e => handleFormSubmit(e)}>
-          <input type='text' placeholder='enter url' value={urlState} onChange={e => setUrlState(e.target.value)} />
-          <input type='submit' value='Add Url' />
-        </form>
-      </div>
-      <div id='modal-overlay'></div>
-    </>
-  )
-}
-
-
-const PopUp =(props)=>{
-
-  const {deleteUrl,setUserPrompt}=props
-
- 
-  return(
-    <>
-     <div id='popup'>
-        <section className='popup-close-btn' >x</section>
-        <div>
-          <section>{deleteUrl?.url}</section>
-          <section>do you want to delete this url?</section>
-          <div>
-            <button onClick={e=>setUserPrompt(true)}>yes</button>
-            <button onClick={e=>setUserPrompt(false)}>no</button>
-          </div>
-        </div>
-      </div>
-      {/* <div id='modal-overlay'></div> */}
-    </>
-  )
-}
 
 export default App;
