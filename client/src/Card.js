@@ -33,6 +33,10 @@ const Card = (props) => {
       rel='noreferrer' 
       data-card={url?._id} 
       draggable 
+      onTouchStart={e=>handleDragStart(e)} 
+      onTochEnd={e=>handleDragEnd(e)}
+      onMouseDown={e=>handleDragStart(e)} 
+      onMouseUp={e=>handleDragEnd(e)}
       onDragStart={e=>handleDragStart(e)} 
       onDragEnd={e=>handleDragEnd(e)} >
         <i className='fa-solid fa-image'></i>
