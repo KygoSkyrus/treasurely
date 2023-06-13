@@ -13,6 +13,6 @@ https://codepen.io/rebelchris/pen/OJyBpEQ
 
 
 # todo
-- api authentication
 - accordion
+- login
 - after deleting dont let url vanish,,,put it in a trash,ist a CRU application

@@ -1,66 +1,66 @@
-body{
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: system-ui,cursive,monospace;
-
+  font-family: system-ui, cursive, monospace;
 }
 
-.all_cards{
+.all_cards {
   display: grid;
   grid-gap: 10px;
   padding: 1rem;
-  max-width: 600px;
+  max-width: 486px;
   margin: auto;
   /* grid-template-columns: repeat(2,ifr); */
 }
 
-
 /*********** CARD *************/
-.card{
+.card {
   display: flex;
   border: 1px solid #e8e8e8;
   border-radius: 4px;
-  overflow: hidden;
-  text-decoration: none;
-    color: #282828;
-    background-color: #f1f1f1;
+  color: #282828;
+  background-color: #f1f1f1;
+  cursor: pointer;
 }
-.card img{
+/* .card img{
   width: 300x;
-  /* height: 100px; */
   max-width: 80px;
   z-index: -1;
+} */
+.card a{
+  color: #575757;
+  text-decoration: none;
 }
-.card i{
+.card .image-icon {
   background: #d5d5d5;
-  background: #282828;
-  color: white;
+  background: #dadada;
+  color: #828282;
   width: 50px;
   height: 40px;
   display: grid;
   place-items: center;
+  /* z-index: -1; */
 }
-.card .url-details{
+.url-icon{
+  color: #b3b3b3;
+}
+.card .url-details {
   padding-left: 10px;
   width: 100%;
   position: relative;
 }
-.card .url-details section:nth-child(1){
-position: absolute;
-right: 4px;
-bottom: 1px;
-    font-size: 11px;
-    color: grey;
+.card .url-details section:nth-child(1) {
+  position: absolute;
+  right: 4px;
+  bottom: 1px;
+  font-size: 11px;
+  color: grey;
 }
 /*********** CARD *************/
 
-
-
-
-
 /*********** add url *************/
-.add-url{
+.add-url {
   width: 50px;
   height: 50px;
   background-color: #ffb600;
@@ -76,9 +76,8 @@ bottom: 1px;
 }
 /*********** add url *************/
 
-
 /*********** delete url icon*************/
-.delete-url{
+.delete-url {
   width: 50px;
   height: 50px;
   background-color: #ff2600;
@@ -94,26 +93,23 @@ bottom: 1px;
 }
 /*********** delete url icon*************/
 
-
-
-
 /*********** MODAL *************/
 #modal,
-#popup{
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-background: #bcbcbcc4;
-/* max-width: 40vw; */
-height: 40vh;
-border-radius: 4px;
-display: none;
-place-items: center;
-padding: 20px;
-z-index: 2;
+#popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #bcbcbcc4;
+  /* max-width: 40vw; */
+  height: 40vh;
+  border-radius: 4px;
+  display: none;
+  place-items: center;
+  padding: 20px;
+  z-index: 2;
 }
-#modal-overlay{
+#modal-overlay {
   display: none;
   width: 100vw;
   height: 100vh;
@@ -124,49 +120,52 @@ z-index: 2;
   z-index: 1;
 }
 .modal-close-btn,
-.popup-close-btn{
+.popup-close-btn {
   position: absolute;
   top: 2px;
   right: 6px;
-    padding: 10px;
-    cursor: pointer;
+  padding: 10px;
+  cursor: pointer;
 }
+
+.modal-close-btn i,
+.popup-close-btn i {
+  color: #828282;
+}
+
 #modal form {
   display: flex;
   flex-direction: column;
 }
-form input{
-  margin-top:6px ;
+form input {
+  margin-top: 6px;
   padding: 8px;
 }
-form input[type=submit]{
+form input[type="submit"] {
   background-color: #ffb600;
   color: #fff;
   cursor: pointer;
 }
 
-#popup .promptBtn{
+#popup .promptBtn {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 6px;
   margin-top: 10px;
 }
-#popup .promptBtn button{
+#popup .promptBtn button {
   width: 100%;
   padding: 8px 0;
   text-transform: capitalize;
+  cursor: pointer;
 }
 /*********** MODAL *************/
 
-
-
-
-
 /*********** MEDIA QUERIES *************/
-@media (min-width:768px){
-  .all_cards{
+@media (min-width: 768px) {
+  .all_cards {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
     max-width: 1200px;
   }
 }

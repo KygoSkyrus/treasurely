@@ -5,6 +5,10 @@ const urlSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    isTrashed: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 

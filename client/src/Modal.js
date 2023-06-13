@@ -8,7 +8,7 @@ const Modal = (props) => {
       <>
         <div id='modal'>
           <section className='modal-close-btn' onClick={e=>handleCloseModal("modal")}>
-            <i className="fa fa-window-close"></i>
+            <i className="fa fa-xl fa-window-close"></i>
             </section>
           {/* <i className="fa fa-times"></i> */}
           <form onSubmit={e => handleFormSubmit(e)}>

@@ -28,23 +28,26 @@ const Card = (props) => {
     <>
       <div
         className='card'
-
         data-card={url?._id}
+        data-url={url?.url}
         draggable
         onTouchStart={e => handleDragStart(e)}
         onTouchEnd={e => handleDragEnd(e)}
-        // onMouseDown={e => handleDragStart(e)}
-        // onMouseUp={e => handleDragEnd(e)}
         onDragStart={e => handleDragStart(e)}
         onDragEnd={e => handleDragEnd(e)} >
-        <i className='fa-solid fa-image'></i>
+        <i className='fa-solid fa-image image-icon'></i>
         {/* <img src='' alt=''/> */}
         <div className='url-details'>
           {/* <section className='title'>title</section>
           <section className='description'>description</section> */}
-          <section className='url'><a href={url?.url}
+          <section className='url'>
+            <a href={url?.url}
             target='_blank'
-            rel='noreferrer' >{url?.url}</a></section>
+            rel='noreferrer' >
+              <i className='fa-solid fa-link url-icon'>&nbsp;</i>
+              {url?.url}
+              </a>
+              </section>
         </div>
       </div>
     </>
