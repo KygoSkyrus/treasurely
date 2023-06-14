@@ -3,6 +3,7 @@ import './App.css';
 import Card from './Card'
 import Modal from './Modal';
 import UserPromptPopUp from './Popup';
+import Login from './Login';
 
 function App() {
 
@@ -11,6 +12,16 @@ function App() {
   const [deleteUrl, setDeleteUrl] = useState({ url: "", id: "" })//keeping url to be  deleted
   const [userPrompt, setUserPrompt] = useState(undefined)//true or false by user
 
+  const [activeModal, setActiveModal] = useState(null);
+
+  const openModal = (modalName) => {
+    console.log('mn',modalName)
+    setActiveModal(modalName);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+  };
 
   //to get url details via API
   //function getLinkDetails(){
@@ -167,7 +178,9 @@ function App() {
           })}
         </div>
 
-        <div className='add-url' onClick={handleShowModal}>
+        <div className='add-url' 
+        // onClick={handleShowModal('addurl')}
+        onClick={() => openModal('addurl')}>
           <i className='fa-solid fa-plus'></i>
         </div>
 
@@ -177,8 +190,12 @@ function App() {
 
       </div>
 
-      <Modal handleFormSubmit={handleFormSubmit} handleCloseModal={handleCloseModal} urlState={urlState} setUrlState={setUrlState} />
-      <UserPromptPopUp deleteUrl={deleteUrl} setUserPrompt={setUserPrompt} handleCloseModal={handleCloseModal} />
+      {activeModal && (
+      <Modal handleFormSubmit={handleFormSubmit} handleCloseModal={handleCloseModal} urlState={urlState} setUrlState={setUrlState} isOpen={true} onClose={closeModal} children={<Login/>} />
+      )}
+        
+      
+      {/* <UserPromptPopUp deleteUrl={deleteUrl} setUserPrompt={setUserPrompt} handleCloseModal={handleCloseModal} /> */}
       <div id='modal-overlay' ></div>
       {/* overlay not working */}
     </>

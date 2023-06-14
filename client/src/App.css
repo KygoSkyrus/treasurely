@@ -94,21 +94,7 @@ body {
 /*********** delete url icon*************/
 
 /*********** MODAL *************/
-#modal,
-#popup {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #bcbcbcc4;
-  /* max-width: 40vw; */
-  height: 40vh;
-  border-radius: 4px;
-  display: none;
-  place-items: center;
-  padding: 20px;
-  z-index: 2;
-}
+
 #modal-overlay {
   display: none;
   width: 100vw;
@@ -158,6 +144,24 @@ form input[type="submit"] {
   padding: 8px 0;
   text-transform: capitalize;
   cursor: pointer;
+}
+/*new modal implemented*/
+.modal{
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #bcbcbcc4;
+  /* max-width: 40vw; */
+  height: 40vh;
+  border-radius: 4px;
+  place-items: center;
+  padding: 20px;
+  z-index: 2;
+}
+.open{
+  display: flex;
 }
 /*********** MODAL *************/
 
