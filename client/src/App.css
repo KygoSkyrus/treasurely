@@ -21,7 +21,7 @@ body {
   border-radius: 4px;
   color: #282828;
   background-color: #f1f1f1;
-  cursor: pointer;
+  cursor: move;
 }
 /* .card img{
   width: 300x;
@@ -95,16 +95,7 @@ body {
 
 /*********** MODAL *************/
 
-#modal-overlay {
-  display: none;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.744);
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
+
 .modal-close-btn,
 .popup-close-btn {
   position: absolute;
@@ -159,6 +150,16 @@ form input[type="submit"] {
   place-items: center;
   padding: 20px;
   z-index: 2;
+}
+.modal-overlay {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.744);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 .open{
   display: flex;

@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Card from './Card'
 import Modal from './Modal';
-import UserPromptPopUp from './Popup';
+import UserPromptPopUp from './TrashUrl';
 import Login from './Login';
+import AddUrl from './AddUrl';
+import TrashUrl from './TrashUrl';
 
 function App() {
 
@@ -92,14 +94,13 @@ function App() {
   }
 
   //allowing drop event
-  const handleDragOver = (e) => {
-    //e.target.style.background = "red";
+  const handleDragOver = (e,) => {
     e.preventDefault();
   }
 
   const handleDrop = (e) => {
     e.preventDefault();
-
+    setActiveModal('trashurl');
     console.log('dddddd==', e.dataTransfer)
 
     let id = e.dataTransfer.getData("text");
@@ -115,8 +116,8 @@ function App() {
     // clone.appendChild(remove);
     // document.getElementById('deleteURL').appendChild(clone);
 
-    document.getElementById('popup').style.display = "flex"
-    document.getElementById('modal-overlay').style.display = 'block'
+    // document.getElementById('popup').style.display = "flex"
+    // document.getElementById('modal-overlay').style.display = 'block'
 
     setDeleteUrl({ ...deleteUrl, url: draggableElement.dataset.url, id: id })
 
@@ -166,6 +167,30 @@ function App() {
   }, [userPrompt])
 
 
+  const renderModalContent = () => {
+    switch (activeModal) {
+      case 'addurl':
+        return (
+        <AddUrl 
+        handleFormSubmit={handleFormSubmit} 
+      urlState={urlState} 
+      setUrlState={setUrlState} 
+      xx="jdjdjd"
+        />
+        );
+      case 'trashurl':
+        return (
+          <TrashUrl/>
+        );
+        case 'login':
+        return (
+          <Login/>
+        );
+      default:
+        return null;
+    }
+  };
+
 
   return (
     <>
@@ -184,19 +209,25 @@ function App() {
           <i className='fa-solid fa-plus'></i>
         </div>
 
-        <div className='delete-url' id='deleteURL' onDragOver={e => handleDragOver(e)} onDrop={e => handleDrop(e)} title="Drag 'n' drop the card over me to delete the url" >
+        <div className='delete-url' id='deleteURL' onDragOver={e => handleDragOver(e)} onDrop={e => handleDrop(e,'trashurl')} title="Drag 'n' drop the card over me to delete the url" >
           <i className='fa-solid fa-trash'></i>
         </div>
 
       </div>
 
       {activeModal && (
-      <Modal handleFormSubmit={handleFormSubmit} handleCloseModal={handleCloseModal} urlState={urlState} setUrlState={setUrlState} isOpen={true} onClose={closeModal} children={<Login/>} />
+      <Modal 
+      //handleCloseModal={handleCloseModal} 
+      
+      isOpen={true} onClose={closeModal} 
+      // children={<Login/>} 
+      content={renderModalContent()}
+      />
       )}
         
       
       {/* <UserPromptPopUp deleteUrl={deleteUrl} setUserPrompt={setUserPrompt} handleCloseModal={handleCloseModal} /> */}
-      <div id='modal-overlay' ></div>
+   
       {/* overlay not working */}
     </>
   );
