@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import './App.css';
 import Card from './Card'
@@ -17,7 +18,7 @@ function App() {
   const [activeModal, setActiveModal] = useState(null);
 
   const openModal = (modalName) => {
-    console.log('mn',modalName)
+    console.log('mn', modalName)
     setActiveModal(modalName);
   };
 
@@ -48,10 +49,7 @@ function App() {
   }, [])
 
 
-  const handleShowModal = () => {
-    document.getElementById('modal').style.display = 'flex'
-    document.getElementById('modal-overlay').style.display = 'block'
-  }
+
 
   const handleCloseModal = (val) => {
     document.getElementById(val).style.display = 'none'
@@ -81,7 +79,7 @@ function App() {
           console.log('ii', data)
           if (data) {
             setUrlState('')
-            handleCloseModal('modal')
+            closeModal()
             //show toast
           } else {
             //throw error show toast
@@ -91,39 +89,6 @@ function App() {
     } else {
       alert('url field cannot be empty')
     }
-  }
-
-  //allowing drop event
-  const handleDragOver = (e,) => {
-    e.preventDefault();
-  }
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setActiveModal('trashurl');
-    console.log('dddddd==', e.dataTransfer)
-
-    let id = e.dataTransfer.getData("text");
-
-    const draggableElement = document.querySelector(`[data-card="${id}"]`);
-    console.log('DRAGEBLE EKEM', draggableElement)
-    console.log('Dddkd0RAGEBLE EKEM', draggableElement.dataset.url)
-
-    // const clone = draggableElement.cloneNode(true);
-    // const remove = document.createElement("div");
-    // remove.classList.add("comp-remove");
-    // remove.innerHTML = "X";
-    // clone.appendChild(remove);
-    // document.getElementById('deleteURL').appendChild(clone);
-
-    // document.getElementById('popup').style.display = "flex"
-    // document.getElementById('modal-overlay').style.display = 'block'
-
-    setDeleteUrl({ ...deleteUrl, url: draggableElement.dataset.url, id: id })
-
-    e.dataTransfer.clearData();
-
-
   }
 
   async function trashUrl(param, theSelected) {
@@ -142,25 +107,45 @@ function App() {
         console.log('ii---', data)
         if (data.isTrashed) {
           theSelected?.remove()
-          handleCloseModal('popup')
+          closeModal()
           setUserPrompt(undefined)
         } else {
-          console.log(data)
+          console.log(data) 
           //throw error show toast
         }
       })
       .catch(error => console.log(error))
   }
 
+  //allowing drop event
+  const handleDragOver = (e,) => {
+    e.preventDefault();
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setActiveModal('trashurl');
+    console.log('dddddd==', e.dataTransfer)
+
+    let id = e.dataTransfer.getData("text");
+    const draggableElement = document.querySelector(`[data-card="${id}"]`);
+    // console.log('DRAGEBLE EKEM', draggableElement)
+    // console.log('userprompt---',userPrompt)
+    setDeleteUrl({ ...deleteUrl, url: draggableElement.dataset.url, id: id })
+    e.dataTransfer.clearData();
+  }
+
+
   useEffect(() => {
     console.log('usserprompt', userPrompt, deleteUrl.id)
     const theSelected = document.querySelector(`[data-card="${deleteUrl.id}"]`);
+    console.log('tsss',theSelected)
     if (userPrompt) {
       trashUrl(deleteUrl, theSelected)//deleting from db
     } else if (theSelected) {
       console.log('rrrr')
       theSelected.style.backgroundColor = '#f1f1f1'
-      handleCloseModal('popup')
+      closeModal()
       setUserPrompt(undefined)
       setDeleteUrl({ ...deleteUrl, url: '', id: '' })
     }
@@ -171,20 +156,24 @@ function App() {
     switch (activeModal) {
       case 'addurl':
         return (
-        <AddUrl 
-        handleFormSubmit={handleFormSubmit} 
-      urlState={urlState} 
-      setUrlState={setUrlState} 
-      xx="jdjdjd"
-        />
+          <AddUrl
+            handleFormSubmit={handleFormSubmit}
+            urlState={urlState}
+            setUrlState={setUrlState}
+          />
         );
       case 'trashurl':
         return (
-          <TrashUrl/>
+          <TrashUrl 
+          deleteUrl={deleteUrl} 
+          setDeleteUrl={setDeleteUrl}
+          userPrompt={userPrompt}//needed in modal comp
+          setUserPrompt={setUserPrompt}//for trashUrl comp
+          />
         );
-        case 'login':
+      case 'login':
         return (
-          <Login/>
+          <Login />
         );
       default:
         return null;
@@ -203,32 +192,28 @@ function App() {
           })}
         </div>
 
-        <div className='add-url' 
-        // onClick={handleShowModal('addurl')}
-        onClick={() => openModal('addurl')}>
+        <div className='add-url'
+          // onClick={handleShowModal('addurl')}
+          onClick={() => openModal('addurl')}>
           <i className='fa-solid fa-plus'></i>
         </div>
 
-        <div className='delete-url' id='deleteURL' onDragOver={e => handleDragOver(e)} onDrop={e => handleDrop(e,'trashurl')} title="Drag 'n' drop the card over me to delete the url" >
+        <div className='delete-url' id='deleteURL'
+          onDragOver={e => handleDragOver(e)}
+          onDrop={e => handleDrop(e)}
+          title="Drag 'n' drop the card over me to delete the url" >
           <i className='fa-solid fa-trash'></i>
         </div>
 
       </div>
 
       {activeModal && (
-      <Modal 
-      //handleCloseModal={handleCloseModal} 
-      
-      isOpen={true} onClose={closeModal} 
-      // children={<Login/>} 
-      content={renderModalContent()}
-      />
+        <Modal
+          isOpen={true} onClose={closeModal}
+          content={renderModalContent()}//or you can directly pass the component here
+        />
       )}
-        
-      
-      {/* <UserPromptPopUp deleteUrl={deleteUrl} setUserPrompt={setUserPrompt} handleCloseModal={handleCloseModal} /> */}
-   
-      {/* overlay not working */}
+
     </>
   );
 }
