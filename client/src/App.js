@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Card from './Card'
 import Modal from './Modal';
-import UserPromptPopUp from './TrashUrl';
 import Login from './Login';
 import AddUrl from './AddUrl';
 import TrashUrl from './TrashUrl';
@@ -14,17 +13,18 @@ function App() {
   const [urls, setUrls] = useState();//has all urls
   const [deleteUrl, setDeleteUrl] = useState({ url: "", id: "" })//keeping url to be  deleted
   const [userPrompt, setUserPrompt] = useState(undefined)//true or false by user
-
+const [passCode,setPassCode]=useState()
   const [activeModal, setActiveModal] = useState(null);
 
+  const [disableClose,setDisableClose]=useState(false)
+//for MODAL-----------------------
   const openModal = (modalName) => {
-    console.log('mn', modalName)
     setActiveModal(modalName);
   };
-
   const closeModal = () => {
     setActiveModal(null);
   };
+//for MODAL-----------------------
 
   //to get url details via API
   //function getLinkDetails(){
@@ -34,32 +34,99 @@ function App() {
   // .then(data=>console.log('d',data))
   // }
 
+  async function handleLogin(){
+    console.log('passsc',passCode)
+    
+      // Send a POST request to the server to authenticate the admin
+      fetch('/api/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
+        },
+        body: JSON.stringify({ passCode })
+      })
+      .then(res=>res.json())
+      .then(response=>{
+
+        console.log('login response;;;check here if its send back the token,,this is important ',response.token)
+  
+        // Store the token in local storage or a secure cookie
+        localStorage.setItem('token', response.token);
+        setActiveModal(null);
+
+        // Update the login state
+        // setIsLoggedIn(true);
+      })
+        
+    
+  }
+
+  function handleLogout(){
+    localStorage.removeItem("token")
+    //add a toast where tp tell user that he have beeen logged out , login again messafe
+    window.location.reload()
+    //setActiveModal('login')
+  }
+
 
   useEffect(() => {
-    fetch('/api/get_url', {
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
+
+    // isUserLoggedIn()
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        setActiveModal('login')
+        setDisableClose(true)
+        // Token is not present, redirect to login page or restrict access
+        return;
       }
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log('get data', data.response)
-        setUrls(data.response)
+console.log('ddjdjdjdjdjxxxxx',token)
+      // Send a GET request to access protected content
+      fetch('/api/get_url', {
+        headers: {
+          Authorization: token,
+        }
       })
+        .then(res => res.json())
+        .then(data => {
+          if(data.response){
+            console.log('get data', data.response)
+            setUrls(data.response)
+          }else {
+            setActiveModal('login')
+            setDisableClose(true)
+            console.log('show login--------------------',data.message)
+          }
+        })
+     
+    
+
+
+ 
+
   }, [])
 
-
-
-
-  const handleCloseModal = (val) => {
-    document.getElementById(val).style.display = 'none'
-    document.getElementById('modal-overlay').style.display = 'none'
-    if (val === 'modal') {
-      setUrlState('')
-    } else if (document.querySelector(`[data-card="${deleteUrl.id}"]`)) {
-      document.querySelector(`[data-card="${deleteUrl.id}"]`).style.backgroundColor = '#f1f1f1'
+  //to reciprocate with user's prompt
+  useEffect(() => {
+    console.log('usserprompt', userPrompt, deleteUrl.id)
+    const theSelected = document.querySelector(`[data-card="${deleteUrl.id}"]`);
+    console.log('tsss',theSelected)
+    if (userPrompt) {
+      trashUrl(deleteUrl, theSelected)//deleting from db
+    } else if (theSelected) {
+      console.log('rrrr')
+      theSelected.style.backgroundColor = '#f1f1f1'
+      closeModal()
+      setUserPrompt(undefined)
+      setDeleteUrl({ ...deleteUrl, url: '', id: '' })
     }
-  }
+  }, [userPrompt])
+
+
+
+
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault()
@@ -90,6 +157,7 @@ function App() {
       alert('url field cannot be empty')
     }
   }
+
 
   async function trashUrl(param, theSelected) {
     console.log('prm', param)
@@ -129,27 +197,11 @@ function App() {
 
     let id = e.dataTransfer.getData("text");
     const draggableElement = document.querySelector(`[data-card="${id}"]`);
-    // console.log('DRAGEBLE EKEM', draggableElement)
-    // console.log('userprompt---',userPrompt)
     setDeleteUrl({ ...deleteUrl, url: draggableElement.dataset.url, id: id })
     e.dataTransfer.clearData();
   }
 
 
-  useEffect(() => {
-    console.log('usserprompt', userPrompt, deleteUrl.id)
-    const theSelected = document.querySelector(`[data-card="${deleteUrl.id}"]`);
-    console.log('tsss',theSelected)
-    if (userPrompt) {
-      trashUrl(deleteUrl, theSelected)//deleting from db
-    } else if (theSelected) {
-      console.log('rrrr')
-      theSelected.style.backgroundColor = '#f1f1f1'
-      closeModal()
-      setUserPrompt(undefined)
-      setDeleteUrl({ ...deleteUrl, url: '', id: '' })
-    }
-  }, [userPrompt])
 
 
   const renderModalContent = () => {
@@ -173,7 +225,11 @@ function App() {
         );
       case 'login':
         return (
-          <Login />
+          <Login
+          handleLogin={handleLogin}
+          setPassCode={setPassCode}
+          passCode={passCode}
+           />
         );
       default:
         return null;
@@ -209,10 +265,12 @@ function App() {
 
       {activeModal && (
         <Modal
-          isOpen={true} onClose={closeModal}
+          isOpen={true} onClose={closeModal} disableClose={disableClose}
           content={renderModalContent()}//or you can directly pass the component here
         />
       )}
+
+      <section className='logout' onClick={()=>handleLogout()}></section>
 
     </>
   );

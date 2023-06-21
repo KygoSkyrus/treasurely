@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express('router');
 const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 
 const URLS = require('../models/urls');
 
@@ -34,20 +35,44 @@ router.post('/api/add_url', authenticateToken, async (req, res) => {
         })
 })
 
+router.get('/api/get_url', async (req, res) => {
+    console.log('geturl')
+    const token = req.headers['authorization']; // Extract the token from the request headers
 
-//get url api 
-router.get('/api/get_url', authenticateToken, async (req, res) => {
+    if (!token) {
+        console.log('did ut rsn??')
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
 
-    await URLS.find({})
-        .then(resp => {
-            console.log(resp)
-            let response = resp.filter(x => !x.isTrashed)//only not trashed urls
-            res.send({ response })
-        })
-        .catch(err => {
-            console.log(err)
-            res.send(err)
-        })
+    try {
+        console.log('token in geturl', token)
+        // Verify and decode the token
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        console.log('ssssss', decoded)
+       const { username } = decoded;
+        if (username === process.env.ADMIN_USERNAME) {
+            // Admin is authorized, proceed to send the protected content
+            await URLS.find({})
+                .then(resp => {
+                    console.log(resp)
+                    let response = resp.filter(x => !x.isTrashed)//only not trashed urls
+                    // res.send({ response })
+                    res.json({ response });
+
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.send(err)
+                })
+        } else {
+            console.log('djdjdj')
+            res.status(401).json({ message: 'Unauthorized' });
+        }
+    } catch (error) {
+        console.log('is this functing------------')
+        res.status(401).json({ message: 'Unauthorized' });
+    }
+
 })
 
 
@@ -71,26 +96,22 @@ router.post('/api/trash_url', authenticateToken, async (req, res) => {
 })
 
 
-//signin
-router.post("/api/login", async (req, res) => {
-    const credentials = req.body;
-  
-    try {
-    //   const result =await ADMIN.findOne({ username: credentials.username, password: credentials.password })
-    //   if (result) {
-    //     if (
-    //       credentials.username === result.username &&
-    //       credentials.password === result.password
-    //     ) {
-    //       res.send({ matched: true });
-    //     }
-    //   } else {
-    //     res.send({ matched: false });
-    //   }
-    } catch (err) {
-      console.log(err);
+
+
+
+router.post('/api/login', authenticateToken, (req, res) => {
+    // Verify admin credentials
+    const { passCode } = req.body;
+    console.log('lgin pswn', passCode)
+    if (passCode === process.env.ADMIN_PSWD) {
+        // Generate and return a token
+        const token = jwt.sign({ username: process.env.ADMIN_USERNAME }, process.env.SECRET_KEY);
+        console.log('d', token)
+        res.json({ token });
+    } else {
+        res.status(401).json({ message: 'Invalid credentials' });
     }
-  });
+});
 
 
 module.exports = router;

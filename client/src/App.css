@@ -167,6 +167,24 @@ form input[type="submit"] {
 }/*open should always be after modal and overlay*/
 /*********** MODAL *************/
 
+
+
+/* login */
+
+
+
+/* logout */
+.logout{
+  width: 10px;
+  height: 10px;
+  background-color: blueviolet;
+  position: fixed;
+  top: 0;
+  right:0;
+
+}
+
+
 /*********** MEDIA QUERIES *************/
 @media (min-width: 768px) {
   .all_cards {
