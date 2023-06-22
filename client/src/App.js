@@ -257,6 +257,8 @@ function App() {
           </>
           : ""
         }
+
+        <div className='splashScreen'>treasurely</div>
       </div>
 
       {activeModal && (

@@ -8,7 +8,21 @@ body {
   /* font-family: 'Allison', cursive;
 font-family: 'Qwitcher Grypen', cursive; */
 }
-
+.splashScreen{
+  font-family: 'Qwitcher Grypen', 'Allison', cursive;
+    font-size: 48px;
+    width: 100vw;
+    height: 100vh;
+    color: #ffb600;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #0d0d0d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
 .all_cards {
   display: grid;
   grid-gap: 10px;
