@@ -160,6 +160,7 @@ form input[type="submit"] {
   top: 0;
   left: 0;
   z-index: 1;
+  /* cursor: pointer; */
 }
 
 .open{
@@ -174,14 +175,48 @@ form input[type="submit"] {
 
 
 /* logout */
-.logout{
-  width: 10px;
-  height: 10px;
-  background-color: blueviolet;
+.logoutBar{
+  width: 60px;
+  height: 5px;
+  border-radius: 6px;
+  background-color: #848484;
   position: fixed;
-  top: 0;
-  right:0;
+  top: 2px;
+  right: 2px;
+  cursor: pointer;
+}
+.logoutBar input{
+  position: absolute;
+  height: 0;
+  width: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.logout{
+  width: 60px;
+  height: 5px;
+  border-radius: 6px;
+  background-color: #848484;
+  position: fixed;
+  top: 2px;
+  right: 2px;
+  cursor: pointer;
+}
+.logoutBtn{
+  width: 60px;
+  height: 0px;
+  top:0;
+  background-color:#fff;
+  transition: 0.3s all;
+  opacity: 0;
+}
 
+.logoutBar input:checked ~ .logoutBtn{
+  height: 40px;
+  background-color: rgb(29, 29, 29);
+  border-radius: 4px;
+  color: #ffb600;
+  opacity: 1;
 }
 
 

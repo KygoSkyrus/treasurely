@@ -17,7 +17,7 @@ const Modal = (props) => {
     <>
       <div
         className={`modal ${isOpen ? 'open' : ''}`}>
-        <section className='modal-close-btn'
+        <section className='modal-close-btn' style={{cursor: disableClose && "no-drop"}}
           onClick={() => {
             if (!disableClose)
               handleClose()

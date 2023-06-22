@@ -13,18 +13,18 @@ function App() {
   const [urls, setUrls] = useState();//has all urls
   const [deleteUrl, setDeleteUrl] = useState({ url: "", id: "" })//keeping url to be  deleted
   const [userPrompt, setUserPrompt] = useState(undefined)//true or false by user
-const [passCode,setPassCode]=useState()
+  const [passCode, setPassCode] = useState('')
   const [activeModal, setActiveModal] = useState(null);
 
-  const [disableClose,setDisableClose]=useState(false)
-//for MODAL-----------------------
+  const [disableClose, setDisableClose] = useState(false)
+  //for MODAL-----------------------
   const openModal = (modalName) => {
     setActiveModal(modalName);
   };
   const closeModal = () => {
     setActiveModal(null);
   };
-//for MODAL-----------------------
+  //for MODAL-----------------------
 
   //to get url details via API
   //function getLinkDetails(){
@@ -34,35 +34,42 @@ const [passCode,setPassCode]=useState()
   // .then(data=>console.log('d',data))
   // }
 
-  async function handleLogin(){
-    console.log('passsc',passCode)
-    
-      // Send a POST request to the server to authenticate the admin
-      fetch('/api/login', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
-        },
-        body: JSON.stringify({ passCode })
-      })
-      .then(res=>res.json())
-      .then(response=>{
+  async function handleLogin() {
+    console.log('passsc', passCode)
 
-        console.log('login response;;;check here if its send back the token,,this is important ',response.token)
-  
-        // Store the token in local storage or a secure cookie
-        localStorage.setItem('token', response.token);
-        setActiveModal(null);
+    // Send a POST request to the server to authenticate the admin
+    fetch('/api/login', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
+      },
+      body: JSON.stringify({ passCode })
+    })
+      .then(res => res.json())
+      .then(response => {
 
-        // Update the login state
-        // setIsLoggedIn(true);
+        if (response.token) {
+
+          console.log('login response;;;check here if its send back the token,,this is important ', response.token)
+
+          // Store the token in local storage or a secure cookie
+          localStorage.setItem('token', response.token);
+          setActiveModal(null);
+          getDataIfLoggedIn()
+          // Update the login state
+          // setIsLoggedIn(true);
+        } else {
+          setPassCode('')
+          alert('passcode incorrect')
+          //add the toast here
+        }
       })
-        
-    
+
+
   }
 
-  function handleLogout(){
+  function handleLogout() {
     localStorage.removeItem("token")
     //add a toast where tp tell user that he have beeen logged out , login again messafe
     window.location.reload()
@@ -72,46 +79,49 @@ const [passCode,setPassCode]=useState()
 
   useEffect(() => {
 
+    getDataIfLoggedIn()
+  }, [])
+
+
+  function getDataIfLoggedIn() {
     // isUserLoggedIn()
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        setActiveModal('login')
-        setDisableClose(true)
-        // Token is not present, redirect to login page or restrict access
-        return;
+    const token = localStorage.getItem('token');
+    console.log('token-----------------------', token)
+    if (!token) {
+      console.log('did this reannnnnn-s-d-s--ds-d-d-d-')
+      setActiveModal('login')
+      setDisableClose(true)
+      // Token is not present, redirect to login page or restrict access
+      return;
+    }
+    console.log('ddjdjdjdjdjxxxxx', token)
+    // Send a GET request to access protected content
+    fetch('/api/get_url', {
+      headers: {
+        Authorization: token,
       }
-console.log('ddjdjdjdjdjxxxxx',token)
-      // Send a GET request to access protected content
-      fetch('/api/get_url', {
-        headers: {
-          Authorization: token,
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.response) {
+          console.log('get data', data.response)
+          setUrls(data.response)
+        } else {
+          setActiveModal('login')
+          setDisableClose(true)
+          console.log('show login--------------------', data.message)
         }
       })
-        .then(res => res.json())
-        .then(data => {
-          if(data.response){
-            console.log('get data', data.response)
-            setUrls(data.response)
-          }else {
-            setActiveModal('login')
-            setDisableClose(true)
-            console.log('show login--------------------',data.message)
-          }
-        })
-     
-    
+
+  }
 
 
- 
-
-  }, [])
 
   //to reciprocate with user's prompt
   useEffect(() => {
     console.log('usserprompt', userPrompt, deleteUrl.id)
     const theSelected = document.querySelector(`[data-card="${deleteUrl.id}"]`);
-    console.log('tsss',theSelected)
+    console.log('tsss', theSelected)
     if (userPrompt) {
       trashUrl(deleteUrl, theSelected)//deleting from db
     } else if (theSelected) {
@@ -147,6 +157,7 @@ console.log('ddjdjdjdjdjxxxxx',token)
           if (data) {
             setUrlState('')
             closeModal()
+            getDataIfLoggedIn()
             //show toast
           } else {
             //throw error show toast
@@ -178,7 +189,7 @@ console.log('ddjdjdjdjdjxxxxx',token)
           closeModal()
           setUserPrompt(undefined)
         } else {
-          console.log(data) 
+          console.log(data)
           //throw error show toast
         }
       })
@@ -216,26 +227,32 @@ console.log('ddjdjdjdjdjxxxxx',token)
         );
       case 'trashurl':
         return (
-          <TrashUrl 
-          deleteUrl={deleteUrl} 
-          setDeleteUrl={setDeleteUrl}
-          userPrompt={userPrompt}//needed in modal comp
-          setUserPrompt={setUserPrompt}//for trashUrl comp
+          <TrashUrl
+            deleteUrl={deleteUrl}
+            setDeleteUrl={setDeleteUrl}
+            userPrompt={userPrompt}//needed in modal comp
+            setUserPrompt={setUserPrompt}//for trashUrl comp
           />
         );
       case 'login':
         return (
           <Login
-          handleLogin={handleLogin}
-          setPassCode={setPassCode}
-          passCode={passCode}
-           />
+            handleLogin={handleLogin}
+            setPassCode={setPassCode}
+            passCode={passCode}
+          />
         );
       default:
         return null;
     }
   };
 
+
+
+
+  function displayLogout() {
+    console.log('hdhdhdhdhdisplay logour')
+  }
 
   return (
     <>
@@ -248,19 +265,31 @@ console.log('ddjdjdjdjdjxxxxx',token)
           })}
         </div>
 
-        <div className='add-url'
-          // onClick={handleShowModal('addurl')}
-          onClick={() => openModal('addurl')}>
-          <i className='fa-solid fa-plus'></i>
-        </div>
+        {urls ?
+          <>
+            <div className='add-url'
+              // onClick={handleShowModal('addurl')}
+              onClick={() => openModal('addurl')}>
+              <i className='fa-solid fa-plus'></i>
+            </div>
 
-        <div className='delete-url' id='deleteURL'
-          onDragOver={e => handleDragOver(e)}
-          onDrop={e => handleDrop(e)}
-          title="Drag 'n' drop the card over me to delete the url" >
-          <i className='fa-solid fa-trash'></i>
-        </div>
-
+            <div className='delete-url' id='deleteURL'
+              onDragOver={e => handleDragOver(e)}
+              onDrop={e => handleDrop(e)}
+              title="Drag 'n' drop the card over me to delete the url" >
+              <i className='fa-solid fa-trash'></i>
+            </div>
+            <label className='logoutBar'>
+              <input type='checkbox'/>
+              <section className='logoutBtn'>LOGOUT</section>
+            </label>
+            {/* <section className='logout'
+      onClick={()=>displayLogout()}
+      //  onClick={() => handleLogout()}
+       ></section> */}
+          </>
+          : ""
+        }
       </div>
 
       {activeModal && (
@@ -270,7 +299,6 @@ console.log('ddjdjdjdjdjxxxxx',token)
         />
       )}
 
-      <section className='logout' onClick={()=>handleLogout()}></section>
 
     </>
   );
