@@ -17,22 +17,21 @@ const Modal = (props) => {
     <>
       <div
         className={`modal ${isOpen ? 'open' : ''}`}>
-        <section className='modal-close-btn' style={{cursor: disableClose && "no-drop"}}
+        <section className='modal-close-btn' style={{ cursor: disableClose && "no-drop" }}
           onClick={() => {
-            if (!disableClose)
-              handleClose()
+            if (!disableClose) handleClose()
           }
           }>
           <i className="fa fa-xl fa-window-close"></i>
         </section>
         {content}
       </div>
-      <div className={`modal-overlay ${isOpen ? 'open' : ''}`} 
-      onClick={() => {
-        if (!disableClose)
-          handleClose()
-      }
-      } ></div>
+      <div className={`modal-overlay ${isOpen ? 'open' : ''}`}
+        onClick={() => {
+          if (!disableClose)
+            handleClose()
+        }
+        } ></div>
     </>
   )
 }

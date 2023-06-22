@@ -15,8 +15,9 @@ function App() {
   const [userPrompt, setUserPrompt] = useState(undefined)//true or false by user
   const [passCode, setPassCode] = useState('')
   const [activeModal, setActiveModal] = useState(null);
-
   const [disableClose, setDisableClose] = useState(false)
+
+
   //for MODAL-----------------------
   const openModal = (modalName) => {
     setActiveModal(modalName);
@@ -35,9 +36,7 @@ function App() {
   // }
 
   async function handleLogin() {
-    console.log('passsc', passCode)
 
-    // Send a POST request to the server to authenticate the admin
     fetch('/api/login', {
       method: "POST",
       headers: {
@@ -50,15 +49,10 @@ function App() {
       .then(response => {
 
         if (response.token) {
-
-          console.log('login response;;;check here if its send back the token,,this is important ', response.token)
-
-          // Store the token in local storage or a secure cookie
           localStorage.setItem('token', response.token);
           setActiveModal(null);
+          setDisableClose(false)
           getDataIfLoggedIn()
-          // Update the login state
-          // setIsLoggedIn(true);
         } else {
           setPassCode('')
           alert('passcode incorrect')
@@ -71,30 +65,40 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem("token")
-    //add a toast where tp tell user that he have beeen logged out , login again messafe
+    //add a toast where to tell user that he have beeen logged out , login again messafe
     window.location.reload()
     //setActiveModal('login')
   }
 
 
   useEffect(() => {
-
     getDataIfLoggedIn()
   }, [])
+
+
+  //to reciprocate with user's prompt
+  useEffect(() => {
+    const theSelected = document.querySelector(`[data-card="${deleteUrl.id}"]`);
+    if (userPrompt) {
+      trashUrl(deleteUrl, theSelected)//deleting from db
+    } else if (theSelected) {
+      theSelected.style.backgroundColor = '#f1f1f1'
+      closeModal()
+      setUserPrompt(undefined)
+      setDeleteUrl({ ...deleteUrl, url: '', id: '' })
+    }
+  }, [userPrompt])
 
 
   function getDataIfLoggedIn() {
     // isUserLoggedIn()
     const token = localStorage.getItem('token');
-    console.log('token-----------------------', token)
     if (!token) {
-      console.log('did this reannnnnn-s-d-s--ds-d-d-d-')
       setActiveModal('login')
       setDisableClose(true)
       // Token is not present, redirect to login page or restrict access
       return;
     }
-    console.log('ddjdjdjdjdjxxxxx', token)
     // Send a GET request to access protected content
     fetch('/api/get_url', {
       headers: {
@@ -104,43 +108,17 @@ function App() {
       .then(res => res.json())
       .then(data => {
         if (data.response) {
-          console.log('get data', data.response)
           setUrls(data.response)
         } else {
           setActiveModal('login')
           setDisableClose(true)
-          console.log('show login--------------------', data.message)
         }
       })
 
   }
 
 
-
-  //to reciprocate with user's prompt
-  useEffect(() => {
-    console.log('usserprompt', userPrompt, deleteUrl.id)
-    const theSelected = document.querySelector(`[data-card="${deleteUrl.id}"]`);
-    console.log('tsss', theSelected)
-    if (userPrompt) {
-      trashUrl(deleteUrl, theSelected)//deleting from db
-    } else if (theSelected) {
-      console.log('rrrr')
-      theSelected.style.backgroundColor = '#f1f1f1'
-      closeModal()
-      setUserPrompt(undefined)
-      setDeleteUrl({ ...deleteUrl, url: '', id: '' })
-    }
-  }, [userPrompt])
-
-
-
-
-
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault()
-    console.log('dd', urlState, process.env.REACT_APP_AUTH_TOKEN)
+  const handleFormSubmit = () => {
 
     if (urlState !== "") {
       fetch('/api/add_url', {
@@ -153,7 +131,6 @@ function App() {
       })
         .then(res => res.json())
         .then(data => {
-          console.log('ii', data)
           if (data) {
             setUrlState('')
             closeModal()
@@ -171,7 +148,6 @@ function App() {
 
 
   async function trashUrl(param, theSelected) {
-    console.log('prm', param)
 
     fetch('/api/trash_url', {
       method: "POST",
@@ -183,13 +159,12 @@ function App() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log('ii---', data)
         if (data.isTrashed) {
           theSelected?.remove()
           closeModal()
           setUserPrompt(undefined)
         } else {
-          console.log(data)
+          alert('something went wrong, Try again!')
           //throw error show toast
         }
       })
@@ -204,7 +179,6 @@ function App() {
   const handleDrop = (e) => {
     e.preventDefault();
     setActiveModal('trashurl');
-    console.log('dddddd==', e.dataTransfer)
 
     let id = e.dataTransfer.getData("text");
     const draggableElement = document.querySelector(`[data-card="${id}"]`);
@@ -249,11 +223,6 @@ function App() {
 
 
 
-
-  function displayLogout() {
-    console.log('hdhdhdhdhdisplay logour')
-  }
-
   return (
     <>
       <div className='app'>
@@ -268,7 +237,6 @@ function App() {
         {urls ?
           <>
             <div className='add-url'
-              // onClick={handleShowModal('addurl')}
               onClick={() => openModal('addurl')}>
               <i className='fa-solid fa-plus'></i>
             </div>
@@ -280,13 +248,12 @@ function App() {
               <i className='fa-solid fa-trash'></i>
             </div>
             <label className='logoutBar'>
-              <input type='checkbox'/>
-              <section className='logoutBtn'>LOGOUT</section>
+              <input type='checkbox' />
+              <section className='bg'></section>
+              <section className='logoutBtn' onClick={() => handleLogout()} >LOGOUT</section>
+              <i className="fa-solid fa-chevron-up fa-bounce arrowUp"></i>
             </label>
-            {/* <section className='logout'
-      onClick={()=>displayLogout()}
-      //  onClick={() => handleLogout()}
-       ></section> */}
+
           </>
           : ""
         }

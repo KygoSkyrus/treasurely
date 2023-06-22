@@ -6,9 +6,11 @@ const AddUrl = (props) => {
 
   return (
     <>
-      <form onSubmit={e => handleFormSubmit(e)}>
-        <input type='text' placeholder='enter url' value={urlState} onChange={e => setUrlState(e.target.value)} />
-        <input type='submit' value='Add Url' />
+      <form >
+        <input type='text' placeholder='enter url' style={{width:"300px"}} value={urlState} onChange={e => setUrlState(e.target.value)} onKeyUp={(e)=>{
+          if(e.key==="Enter") handleFormSubmit()
+        }}  />
+        <button className=' btn' onSubmit={() => handleFormSubmit()} >Add Url</button>
       </form>
     </>
   )

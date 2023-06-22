@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Allison&family=Qwitcher+Grypen&display=swap');
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: system-ui, cursive, monospace;
+  background-color: #282828;
+  /* font-family: 'Allison', cursive;
+font-family: 'Qwitcher Grypen', cursive; */
 }
 
 .all_cards {
@@ -28,7 +32,7 @@ body {
   max-width: 80px;
   z-index: -1;
 } */
-.card a{
+.card a {
   color: #575757;
   text-decoration: none;
 }
@@ -42,7 +46,7 @@ body {
   place-items: center;
   /* z-index: -1; */
 }
-.url-icon{
+.url-icon {
   color: #b3b3b3;
 }
 .card .url-details {
@@ -58,6 +62,39 @@ body {
   color: grey;
 }
 /*********** CARD *************/
+
+/* FORM AND BUTTONS */
+form {
+  display: flex;
+}
+form input,
+.input {
+  /* margin-top: 6px; */
+  padding: 8px;
+}
+form .btn {
+  width: 20%;
+}
+.btn {
+  background-color: #ffb600;
+  color: #fff;
+  cursor: pointer;
+}
+
+.promptBtn {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 3px;
+  margin-top: 10px;
+}
+.promptBtn button {
+  width: 100%;
+  padding: 8px 0;
+  text-transform: capitalize;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+/* FORM AND BUTTONS */
 
 /*********** add url *************/
 .add-url {
@@ -89,61 +126,17 @@ body {
   justify-content: center;
   align-items: center;
   color: white;
-  /* cursor: pointer; */
 }
 /*********** delete url icon*************/
 
 /*********** MODAL *************/
-
-
-.modal-close-btn,
-.popup-close-btn {
-  position: absolute;
-  top: 2px;
-  right: 6px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.modal-close-btn i,
-.popup-close-btn i {
-  color: #828282;
-}
-
-#modal form {
-  display: flex;
-  flex-direction: column;
-}
-form input {
-  margin-top: 6px;
-  padding: 8px;
-}
-form input[type="submit"] {
-  background-color: #ffb600;
-  color: #fff;
-  cursor: pointer;
-}
-
-#popup .promptBtn {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 6px;
-  margin-top: 10px;
-}
-#popup .promptBtn button {
-  width: 100%;
-  padding: 8px 0;
-  text-transform: capitalize;
-  cursor: pointer;
-}
-/*new modal implemented*/
-.modal{
+.modal {
   display: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #bcbcbcc4;
+  background: #e3e3e3c4;
   /* max-width: 40vw; */
   height: 40vh;
   border-radius: 4px;
@@ -160,65 +153,80 @@ form input[type="submit"] {
   top: 0;
   left: 0;
   z-index: 1;
-  /* cursor: pointer; */
 }
 
-.open{
+.open {
   display: flex;
-}/*open should always be after modal and overlay*/
+} /*open should always be after modal and overlay*/
+
+.modal-close-btn {
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.modal-close-btn i {
+  color: #828282;
+}
 /*********** MODAL *************/
 
-
-
-/* login */
-
-
-
-/* logout */
-.logoutBar{
-  width: 60px;
+/* ----------------------LOGOUT ELEMENTS----------------------- */
+.logoutBar,
+.bg {
+  width: 89px;
   height: 5px;
-  border-radius: 6px;
+  border-radius: 4px;
   background-color: #848484;
   position: fixed;
   top: 2px;
-  right: 2px;
+  right: 6px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  transition: 0.5s all;
 }
-.logoutBar input{
+.logoutBar input {
   position: absolute;
   height: 0;
   width: 0;
   opacity: 0;
   cursor: pointer;
 }
-.logout{
+.logoutBtn {
   width: 60px;
-  height: 5px;
-  border-radius: 6px;
-  background-color: #848484;
-  position: fixed;
-  top: 2px;
-  right: 2px;
-  cursor: pointer;
+  position: absolute;
+  top: -32px;
+  right: 6px;
+  color: #ffb600;
+  transition: 0.5s all;
+  opacity: 0;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
-.logoutBtn{
-  width: 60px;
-  height: 0px;
-  top:0;
-  background-color:#fff;
-  transition: 0.3s all;
+.arrowUp {
+  position: absolute;
+  top: 50px;
+  color: #fff;
   opacity: 0;
 }
 
-.logoutBar input:checked ~ .logoutBtn{
-  height: 40px;
-  background-color: rgb(29, 29, 29);
-  border-radius: 4px;
-  color: #ffb600;
+.logoutBar input:checked ~ .logoutBtn {
+  background-color: rgb(40 40 40);
+  opacity: 1;
+  top: 7px;
+  border-bottom: 2px solid #b4b4b4;
+}
+.logoutBar input:checked ~ .bg {
+  height: 70px;
+  background-color: rgb(130 130 130);
+  border-bottom: 2px solid #000;
+}
+.logoutBar input:checked ~ .arrowUp {
   opacity: 1;
 }
-
+/* ----------------------LOGOUT ELEMENTS----------------------- */
 
 /*********** MEDIA QUERIES *************/
 @media (min-width: 768px) {
@@ -226,6 +234,13 @@ form input[type="submit"] {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     max-width: 1200px;
+  }
+}
+@media (max-width: 768px) {
+  .add-url,
+  .delete-url {
+    width: 40px;
+    height: 40px;
   }
 }
 /*********** MEDIA QUERIES *************/

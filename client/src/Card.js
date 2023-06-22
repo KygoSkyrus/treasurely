@@ -3,8 +3,6 @@ import React from 'react'
 const Card = (props) => {
   const { url, deleteUrl } = props;
 
-
-
   function handleDragStart(event) {
     event.dataTransfer.setData("text/plain", event.currentTarget.dataset.card);
     event.currentTarget.style.backgroundColor = "#414141bd";//when drag is started
@@ -12,17 +10,11 @@ const Card = (props) => {
 
   function handleDragEnd(event) {
     if (deleteUrl.url) {
-      console.log('th8is', deleteUrl.url)
       event.currentTarget.style.backgroundColor = "#ff2600cc";//when drag ends the color will be
     } else {
-      console.log('that')
-
       event.currentTarget.style.backgroundColor = '#f1f1f1'
     }
   }
-
-
-
 
   return (
     <>

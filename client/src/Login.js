@@ -1,10 +1,12 @@
 import React from 'react'
 
-const Login = ({handleLogin,passCode,setPassCode}) => {
+const Login = ({ handleLogin, passCode, setPassCode }) => {
   return (
-    <div>
-        <input type="password" placeholder='enter passcode' value={passCode} onChange={e => setPassCode(e.target.value)} />
-        <button onClick={()=>handleLogin()}>Enter</button>
+    <div style={{ display: "flex" }}>
+      <input type="password" placeholder='enter passcode' className='input' value={passCode} onChange={e => setPassCode(e.target.value)} onKeyUp={(e) => {
+        if (e.key === "Enter") handleLogin()
+      }} />
+      <button onClick={() => handleLogin()} className='btn'>Enter</button>
     </div>
   )
 }
