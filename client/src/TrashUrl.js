@@ -6,7 +6,7 @@ const TrashUrl = (props) => {
 
   return (
     <>
-      <div >
+      <div style={{ minWidth: "300px"}} >
         <section style={{ fontWeight: "300", padding: '6px 0' }} >{deleteUrl?.url}</section>
         <section>Do you want to delete this url?</section>
         <div className='promptBtn'>

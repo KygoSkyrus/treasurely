@@ -226,6 +226,15 @@ function App() {
   return (
     <>
       <div className='app'>
+      <div className='head' onClick={()=>{document.querySelector('.logoutBar')?.click()}}>treasurely</div>
+
+      <label className='logoutBar'>
+              <input type='checkbox' />
+              <section className='bg'></section>
+              <section className='logoutBtn' onClick={() => handleLogout()} >LOGOUT</section>
+              <i className="fa-solid fa-chevron-up fa-bounce arrowUp"></i>
+            </label>
+
         <div className='all_cards'>
           {urls?.map(x => {
             return (
@@ -247,13 +256,6 @@ function App() {
               title="Drag 'n' drop the card over me to delete the url" >
               <i className='fa-solid fa-trash'></i>
             </div>
-            <label className='logoutBar'>
-              <input type='checkbox' />
-              <section className='bg'></section>
-              <section className='logoutBtn' onClick={() => handleLogout()} >LOGOUT</section>
-              <i className="fa-solid fa-chevron-up fa-bounce arrowUp"></i>
-            </label>
-
           </>
           : ""
         }

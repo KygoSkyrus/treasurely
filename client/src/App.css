@@ -8,6 +8,14 @@ body {
   /* font-family: 'Allison', cursive;
 font-family: 'Qwitcher Grypen', cursive; */
 }
+.head{
+  font-family: 'Qwitcher Grypen', 'Allison', cursive;
+  font-size: 48px;
+  color: #ffb600;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
 .splashScreen{
   font-family: 'Qwitcher Grypen', 'Allison', cursive;
     font-size: 48px;
@@ -74,6 +82,7 @@ font-family: 'Qwitcher Grypen', cursive; */
   bottom: 1px;
   font-size: 11px;
   color: grey;
+  text-align: right;
 }
 /*********** CARD *************/
 
@@ -189,13 +198,13 @@ form .btn {
 /* ----------------------LOGOUT ELEMENTS----------------------- */
 .logoutBar,
 .bg {
-  width: 89px;
+  width: 59px;
   height: 5px;
   border-radius: 4px;
   background-color: #848484;
   position: fixed;
   top: 2px;
-  right: 6px;
+  right: 17px;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -212,7 +221,7 @@ form .btn {
   width: 60px;
   position: absolute;
   top: -32px;
-  right: 6px;
+  right: -5px;
   color: #ffb600;
   transition: 0.5s all;
   opacity: 0;
@@ -233,7 +242,9 @@ form .btn {
   border-bottom: 2px solid #b4b4b4;
 }
 .logoutBar input:checked ~ .bg {
+  width: 89px;
   height: 70px;
+  right: 6px;
   background-color: rgb(130 130 130);
   border-bottom: 2px solid #000;
 }

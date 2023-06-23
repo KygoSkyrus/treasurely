@@ -10,7 +10,7 @@ const AddUrl = (props) => {
         <input type='text' placeholder='enter url' style={{width:"300px"}} value={urlState} onChange={e => setUrlState(e.target.value)} onKeyUp={(e)=>{
           if(e.key==="Enter") handleFormSubmit()
         }}  />
-        <button className=' btn' onSubmit={() => handleFormSubmit()} >Add Url</button>
+        <button className=' btn' onClick={() => handleFormSubmit()} >Add URL</button>
       </form>
     </>
   )
