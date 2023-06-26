@@ -84,10 +84,9 @@ router.post('/api/trash_url', authenticateToken, async (req, res) => {
 })
 
 
-router.post('/api/login', authenticateToken, (req, res) => {
+router.post('/api/login', (req, res) => {
     // Verify admin credentials
     const { passCode } = req.body;
-    console.log('passcode',passCode)
     if (passCode === process.env.ADMIN_PSWD) {
         // Generate and return a token
         const token = jwt.sign({ username: process.env.ADMIN_USERNAME }, process.env.SECRET_KEY);
