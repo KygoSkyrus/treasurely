@@ -47,7 +47,8 @@ function App() {
     })
       .then(res => res.json())
       .then(response => {
-
+console.log('response',response)
+console.log('token response',response.token)
         if (response.token) {
           localStorage.setItem('token', response.token);
           setActiveModal(null);
