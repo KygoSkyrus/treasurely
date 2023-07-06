@@ -42,6 +42,7 @@ font-family: 'Qwitcher Grypen', cursive; */
   padding: 1rem;
   max-width: 486px;
   margin: auto;
+  margin-bottom: 60px;
   /* grid-template-columns: repeat(2,ifr); */
 }
 
