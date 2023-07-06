@@ -8,6 +8,11 @@ body {
   /* font-family: 'Allison', cursive;
 font-family: 'Qwitcher Grypen', cursive; */
 }
+.overflow{
+  overflow-y: hidden;
+  height: 100vh;
+  position: relative;
+}
 .head{
   font-family: 'Qwitcher Grypen', 'Allison', cursive;
   font-size: 48px;
@@ -87,15 +92,15 @@ font-family: 'Qwitcher Grypen', cursive; */
 /*********** CARD *************/
 
 /* FORM AND BUTTONS */
-form {
+.form {
   display: flex;
 }
-form input,
+.form input,
 .input {
   /* margin-top: 6px; */
   padding: 8px;
 }
-form .btn {
+.form .btn {
   width: 20%;
 }
 .btn {
@@ -118,16 +123,21 @@ form .btn {
   text-transform: capitalize;
 }
 /* FORM AND BUTTONS */
-
+.btn-holder{
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: #282828;
+}
 /*********** add url *************/
 .add-url {
   width: 50px;
   height: 50px;
   background-color: #ffb600;
   border-radius: 4px;
-  position: fixed;
-  bottom: 0.7rem;
-  right: 0.7rem;
+  margin: 0.7rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,9 +152,7 @@ form .btn {
   height: 50px;
   background-color: #ff2600;
   border-radius: 4px;
-  position: fixed;
-  bottom: 0.7rem;
-  left: 0.7rem;
+  margin: 0.7rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -169,7 +177,7 @@ form .btn {
 }
 .modal-overlay {
   display: none;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.744);
   position: absolute;

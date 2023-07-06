@@ -118,8 +118,8 @@ function App() {
   }
 
 
-  const handleFormSubmit = () => {
-
+  function handleFormSubmit () {
+    
     if (urlState !== "") {
       fetch('/api/add_url', {
         method: "POST",
@@ -245,16 +245,18 @@ function App() {
 
         {urls ?
           <>
-            <div className='add-url'
-              onClick={() => openModal('addurl')}>
-              <i className='fa-solid fa-plus'></i>
-            </div>
-
+           <div className='btn-holder'>
             <div className='delete-url' id='deleteURL'
               onDragOver={e => handleDragOver(e)}
               onDrop={e => handleDrop(e)}
               title="Drag 'n' drop the card over me to delete the url" >
               <i className='fa-solid fa-trash'></i>
+            </div>
+
+            <div className='add-url'
+              onClick={() => openModal('addurl')}>
+              <i className='fa-solid fa-plus'></i>
+            </div>
             </div>
           </>
           : ""

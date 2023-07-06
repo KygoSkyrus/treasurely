@@ -3,6 +3,7 @@ import React from "react";
 const Modal = (props) => {
 
   const { isOpen, onClose, content, disableClose } = props
+
   const handleClose = () => {
     onClose();
     //check if the props has userpromt state,,bcz only trash url has that and add url doesnt
